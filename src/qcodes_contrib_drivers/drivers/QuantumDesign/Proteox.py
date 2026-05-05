@@ -1,5 +1,5 @@
-"""  oi.DECS driver for Proteox dilution refrigerator systems  """
-""" Developed and maintained by Oxford Instruments NanoScience """
+"""  DECS driver for Proteox dilution refrigerator systems  """
+""" Developed and maintained by Quantum Design Oxford """
 
 from functools import partial
 from typing import Any, Union
@@ -11,23 +11,16 @@ import numpy as np
 from qcodes.instrument import VisaInstrument
 from qcodes.parameters import MultiParameter
 
-from qcodes_contrib_drivers.drivers.OxfordInstruments._decsvisa.src.decs_visa_tools.decs_visa_settings import PORT
-from qcodes_contrib_drivers.drivers.OxfordInstruments._decsvisa.src.decs_visa_tools.decs_visa_settings import HOST
-from qcodes_contrib_drivers.drivers.OxfordInstruments._decsvisa.src.decs_visa_tools.decs_visa_settings import SHUTDOWN
-from qcodes_contrib_drivers.drivers.OxfordInstruments._decsvisa.src.decs_visa_tools.decs_visa_settings import WRITE_DELIM
+from qcodes_contrib_drivers.drivers.QuantumDesign._decsvisa.src.decs_visa_tools.decs_visa_settings import PORT
+from qcodes_contrib_drivers.drivers.QuantumDesign._decsvisa.src.decs_visa_tools.decs_visa_settings import HOST
+from qcodes_contrib_drivers.drivers.QuantumDesign._decsvisa.src.decs_visa_tools.decs_visa_settings import SHUTDOWN
+from qcodes_contrib_drivers.drivers.QuantumDesign._decsvisa.src.decs_visa_tools.decs_visa_settings import WRITE_DELIM
 
 '''
 
     Please see the README.md file in this directory for setup instructions.
 
 '''
-
-#############################################
-#    Configuration settings required     #
-#############################################
-
-# supply the file path from your working directory to the decs_visa.py file
-decs_visa_path = "../../src/qcodes_contrib_drivers/drivers/OxfordInstruments/_decsvisa/src/decs_visa.py"
 
 #############################################
 #    System configuration settings     #
@@ -42,11 +35,11 @@ SYSTEM_HAS_MAGNET=True
 MAGNET_HAS_SWITCH=False
 
 # Dual PTR (ProteoxLX) system:
-DUAL_PTRS_FITTED=False # not currently used
+DUAL_PTRS_FITTED=False
 
 # Does the system have the < 5mK; > 900 uW
 # dilution unit installed
-DUAL_TURBO_FITTED=False # not currently used
+DUAL_TURBO_FITTED=False
 
 # Does the system have a 3He flow meter
 HE3_FLOW_METER_FITTED=False
@@ -85,7 +78,7 @@ class MagneticFieldParameters(MultiParameter):
         """
         Gets the values of magnetic field from the instrument
         """
-        assert isinstance(self.instrument, oiDECS)
+        assert isinstance(self.instrument, DECS)
         #Bx, By, Bz = self.instrument._get_field_data()
         return self.instrument._get_field_data()
 
@@ -126,7 +119,7 @@ class MagnetCurrentParameters(MultiParameter):
         """
         Gets the values of magnet current from the instrument
         """
-        assert isinstance(self.instrument, oiDECS)
+        assert isinstance(self.instrument, DECS)
         #Ix, Iy, Iz = self.instrument._get_field_current_data()
         return self.instrument._get_field_current_data()
 
@@ -136,9 +129,13 @@ class MagnetCurrentParameters(MultiParameter):
         """
         print("*** Current cannot be set directly with this function ***")
 
-class oiDECS(VisaInstrument):
-    """ Main implementation of the oi.DECS driver """
-    def __init__(self, name, **kwargs):
+class DECS(VisaInstrument):
+    """ Main implementation of the DECS driver """
+    def __init__(self, name, decs_visa_path, **kwargs):
+        """
+        name (str): instrument name e.g. 'Proteox'
+        decs_visa_path (str): supply the file path from your working directory to the decs_visa.py file
+        """
 
         running_on = platform.platform()
         if running_on.startswith("Windows"):
