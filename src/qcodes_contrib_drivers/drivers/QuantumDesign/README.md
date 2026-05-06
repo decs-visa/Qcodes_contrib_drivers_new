@@ -9,7 +9,7 @@ It is possible to implement the WAMP messaging protocol directly from `QCoDeS`, 
 
 An alternative approach is to make `DECS` *'look like'* a standard `VISA` instrument. To accomplish this, a simple socket server can be inserted between `QCoDeS` and `DECS`. A pair of python `queue.Queue` queues are provided for inter-process communication between the socket server and the WAMP API. This simple TCP socket server is provided by the `DECS<->VISA` python application.
 
-![DECS<->VISA img](../../../../docs/examples/QD_images/DECS_VISA.jpg)
+![DECS<->VISA img](../../../../docs/examples/QD_images/DECS_VISA.png)
 
 ## To connect to your system control software ('DECS') using QCoDeS
 
