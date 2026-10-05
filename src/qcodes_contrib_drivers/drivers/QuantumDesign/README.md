@@ -1,7 +1,7 @@
-## Proteox QCoDeS
+## Proteox and Teslatron QCoDeS
 
 #### Why is this different to a standard QCoDeS driver?
-Proteox refrigerators are controlled with the `DECS` system control software. This is designed to operate in an asynchronous fashion using WebSockets.
+Quantum Design Oxford systems are controlled with the `DECS` system control software. This is designed to operate in an asynchronous fashion using WebSockets.
 
 Many `QCoDeS` drivers are written for `VISA` instruments that have synchronous behaviour.
 
@@ -15,7 +15,7 @@ An alternative approach is to make `DECS` *'look like'* a standard `VISA` instru
 
 1.  Setup the `decsvisa` simple TCP socket server. Follow the setup and configuration steps detailed in the `README.md` file included within the decsvisa directory. This decsvisa directory can be found at `qcodes/instrument_drivers/QuantumDesign/decsvisa`.
 
-2. In the `QCoDeS` driver file `Proteox.py`, configure the system settings to be correct for your system.
+2. For Proteox systems, in the `QCoDeS` driver file `Proteox.py`, configure the system settings to be correct for your system.
 
     ````python
     #############################################
@@ -54,6 +54,11 @@ An alternative approach is to make `DECS` *'look like'* a standard `VISA` instru
     ````python
     from qcodes_contrib_drivers.drivers.QuantumDesign.Proteox import DECS
     Proteox = DECS('Proteox')
+    ````
+    or
+    ````python
+    from qcodes_contrib_drivers.drivers.QuantumDesign.Teslatron import DECS
+    Teslatron = DECS('Teslatron')
     ````
 Once connected, the driver can be used in the same way as any other `QCoDeS` driver. See the file `docs/examples/QuantumDesign_Proteox.ipynb` for an example. When you close the connection, e.g. `Proteox.close()`, this will also close the WAMP connection established by `DECS<->VISA`, as well as the socket server it launches (see the `DECS<->VISA` README for further details).
 
